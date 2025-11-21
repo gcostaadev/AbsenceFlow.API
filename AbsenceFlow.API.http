@@ -1,0 +1,6 @@
+@AbsenceFlow.API_HostAddress = http://localhost:5160
+
+GET {{AbsenceFlow.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

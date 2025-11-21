@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbsenceFlow.API", "AbsenceFlow.API.csproj", "{FB3A34D8-5121-4CE2-9C25-F2616932E8C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbsenceFlow.ClientV2", "..\AbsenceFlow.ClientV2\AbsenceFlow.ClientV2.csproj", "{EE437BE0-8260-4FD6-86DB-63EC8510C384}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB3A34D8-5121-4CE2-9C25-F2616932E8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB3A34D8-5121-4CE2-9C25-F2616932E8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB3A34D8-5121-4CE2-9C25-F2616932E8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB3A34D8-5121-4CE2-9C25-F2616932E8C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE437BE0-8260-4FD6-86DB-63EC8510C384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE437BE0-8260-4FD6-86DB-63EC8510C384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE437BE0-8260-4FD6-86DB-63EC8510C384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE437BE0-8260-4FD6-86DB-63EC8510C384}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {129AA48A-77E7-40E9-A453-320348538AD8}
+	EndGlobalSection
+EndGlobal
