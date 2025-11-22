@@ -23,17 +23,17 @@ namespace AbsenceFlow.API.Entities
             Status = SolicitacaoStatusEnum.Pendente; 
         }
 
-        // Construtor vazio para ORM
+        
         protected Solicitacao() { }
 
-        // 1. Relacionamento (Chave Estrangeira)
+        
         public int IdColaborador { get; private set; }
 
-        // Propriedade de Navegação (Objeto Colaborador)
+        
         public Colaborador Colaborador { get; private set; }
 
 
-        // 2. Campos de Dados e Lógica de Negócio
+        
 
         
         public SolicitacaoTipoEnum Tipo { get; private set; }
@@ -60,7 +60,7 @@ namespace AbsenceFlow.API.Entities
         {
             if (Status == SolicitacaoStatusEnum.Aprovada)
             {
-                // Este é um bom ponto para aplicar a regra de estorno do saldo
+                
                 throw new InvalidOperationException("Solicitações APROVADAS não podem ser diretamente REJEITADAS. O saldo deve ser estornado primeiro.");
             }
             Status = SolicitacaoStatusEnum.Rejeitada;

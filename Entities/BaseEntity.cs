@@ -19,7 +19,7 @@
             IsDeleted = true;
         }
 
-        // Novo método para atualização de dados
+        
         public void SetAsUpdated()
         {
             UpdatedAt = DateTime.UtcNow;

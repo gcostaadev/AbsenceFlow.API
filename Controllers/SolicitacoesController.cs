@@ -1,8 +1,8 @@
 ﻿using AbsenceFlow.API.Models;
-using AbsenceFlow.API.Services; // Novo using
+using AbsenceFlow.API.Services; 
 using Microsoft.AspNetCore.Mvc;
 
-// Removidos: using AbsenceFlow.API.Entities, AbsenceFlow.API.Persistence, using Microsoft.EntityFrameworkCore, etc.
+
 
 namespace AbsenceFlow.API.Controllers
 {

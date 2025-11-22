@@ -44,7 +44,7 @@ namespace AbsenceFlow.API.Controllers
         {           
             var colaborador = await _colaboradorService.GetByIdAsync(id);
 
-            return Ok(colaborador); // Retorna ColaboradorViewModel
+            return Ok(colaborador); 
         }
 
         

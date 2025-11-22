@@ -1,7 +1,7 @@
 ﻿using AbsenceFlow.API.Entities;
 using AbsenceFlow.API.Models;
 using AbsenceFlow.API.Persistence;
-using AbsenceFlow.API.Exceptions; // Importante para as exceções
+using AbsenceFlow.API.Exceptions; 
 using Microsoft.EntityFrameworkCore;
 
 namespace AbsenceFlow.API.Services
@@ -15,7 +15,7 @@ namespace AbsenceFlow.API.Services
             _dbContext = dbContext;
         }
 
-        // Helper para mapear Entidade -> ViewModel
+        
         private ColaboradorViewModel MapToViewModel(Colaborador c)
         {
             return new ColaboradorViewModel(
@@ -28,10 +28,10 @@ namespace AbsenceFlow.API.Services
             );
         }
 
-        // --- CREATE ---
+        
         public async Task<int> CreateAsync(ColaboradorInputModel model)
         {
-            // 1. Regra de Negócio: Verificar Conflito (Email Único)
+            
             var emailExists = await _dbContext.Colaboradores.AnyAsync(c => c.EmailCorporativo == model.EmailCorporativo);
             if (emailExists)
             {
@@ -46,7 +46,7 @@ namespace AbsenceFlow.API.Services
             return novoColaborador.Id;
         }
 
-        // --- READ ---
+        
         public async Task<List<ColaboradorViewModel>> GetAllAsync()
         {
             var colaboradores = await _dbContext.Colaboradores.ToListAsync();
@@ -65,7 +65,7 @@ namespace AbsenceFlow.API.Services
             return MapToViewModel(colaborador);
         }
 
-        // --- UPDATE ---
+        
         public async Task UpdateAsync(int id, ColaboradorUpdateModel model)
         {
             var colaborador = await _dbContext.Colaboradores.SingleOrDefaultAsync(c => c.Id == id);
@@ -75,7 +75,7 @@ namespace AbsenceFlow.API.Services
                 throw new RecursoNaoEncontradoException($"Colaborador com Id {id} não encontrado.");
             }
 
-            // 1. Regra de Negócio: Verificar Conflito de Email ao Atualizar
+            
             var emailExists = await _dbContext.Colaboradores.AnyAsync(c => c.EmailCorporativo == model.EmailCorporativo && c.Id != id);
             if (emailExists)
             {
@@ -87,7 +87,7 @@ namespace AbsenceFlow.API.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        // --- DELETE ---
+       
         public async Task DeleteAsync(int id)
         {
             var colaborador = await _dbContext.Colaboradores.SingleOrDefaultAsync(c => c.Id == id);
