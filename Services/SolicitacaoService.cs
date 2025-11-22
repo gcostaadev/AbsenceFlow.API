@@ -23,9 +23,7 @@ namespace AbsenceFlow.API.Services
             return new SolicitacaoViewModel(s.Id, s.IdColaborador, s.Tipo, s.DataInicio, s.DataFim, s.DiasUteisSolicitados, s.Motivo, s.Status);
         }
 
-        // ----------------------------------------------------
-        // C - CREATE (Criação com Regras de Negócio)
-        // ----------------------------------------------------
+        
         public async Task<int> CreateAsync(SolicitacaoInputModel model)
         {
             var colaborador = await _dbContext.Colaboradores.SingleOrDefaultAsync(c => c.Id == model.IdColaborador);
@@ -35,7 +33,7 @@ namespace AbsenceFlow.API.Services
                 throw new RecursoNaoEncontradoException($"Colaborador com Id {model.IdColaborador} não encontrado.");
             }
 
-            // 1. Cálculo Inteligente de Dias Úteis
+            
             int diasSolicitados = CalcularDiasUteis(model.DataInicio, model.DataFim);
 
             if (diasSolicitados <= 0)
@@ -43,7 +41,7 @@ namespace AbsenceFlow.API.Services
                 throw new RegraNegocioInvalidaException("O período de solicitação é inválido ou não inclui dias úteis.");
             }
 
-            // 2. Verificação de Saldo e Conflito (Apenas para FÉRIAS)
+            
             if (model.Tipo == SolicitacaoTipoEnum.Ferias)
             {
                 if (diasSolicitados > colaborador.SaldoDiasFerias)
@@ -63,7 +61,7 @@ namespace AbsenceFlow.API.Services
                 }
             }
 
-            // 3. Criação da Entidade
+            
             var novaSolicitacao = new Solicitacao(
                 model.IdColaborador,
                 model.Tipo,
@@ -79,12 +77,10 @@ namespace AbsenceFlow.API.Services
             return novaSolicitacao.Id;
         }
 
-        // ----------------------------------------------------
-        // U - UPDATE STATUS (Aprovação/Rejeição e Dedução de Saldo)
-        // ----------------------------------------------------
+        
         public async Task UpdateStatusAsync(int id, SolicitacaoStatusEnum novoStatus)
         {
-            // Incluir Colaborador para que a atualização do saldo seja rastreada
+            
             var solicitacao = await _dbContext.Solicitacoes
                                               .Include(s => s.Colaborador)
                                               .SingleOrDefaultAsync(s => s.Id == id);
@@ -101,10 +97,10 @@ namespace AbsenceFlow.API.Services
                     throw new RegraNegocioInvalidaException("A solicitação deve estar PENDENTE para ser aprovada.");
                 }
 
-                // Dedução de Saldo (apenas se for FÉRIAS)
+                /
                 if (solicitacao.Tipo == SolicitacaoTipoEnum.Ferias)
                 {
-                    // Verifica o saldo mais uma vez (segurança extra)
+                    
                     if (solicitacao.DiasUteisSolicitados > solicitacao.Colaborador.SaldoDiasFerias)
                     {
                         throw new RegraNegocioInvalidaException($"Saldo insuficiente para aprovação. Dias disponíveis: {solicitacao.Colaborador.SaldoDiasFerias}.");
@@ -117,7 +113,7 @@ namespace AbsenceFlow.API.Services
             }
             else if (novoStatus == SolicitacaoStatusEnum.Rejeitada)
             {
-                // Regra de Estorno: Se a solicitação estava APROVADA e for REJEITADA/CANCELADA, o saldo é estornado.
+                
                 if (solicitacao.Status == SolicitacaoStatusEnum.Aprovada && solicitacao.Tipo == SolicitacaoTipoEnum.Ferias)
                 {
                     solicitacao.Colaborador.AtualizarSaldoFerias(solicitacao.DiasUteisSolicitados, isDeducao: false); 
@@ -134,9 +130,7 @@ namespace AbsenceFlow.API.Services
         }
 
 
-        // ----------------------------------------------------
-        // R - READ (GET)
-        // ----------------------------------------------------
+        
         public async Task<List<SolicitacaoViewModel>> GetAllAsync()
         {
             var solicitacoes = await _dbContext.Solicitacoes.ToListAsync();
@@ -155,9 +149,7 @@ namespace AbsenceFlow.API.Services
             return MapToViewModel(solicitacao);
         }
 
-        // ----------------------------------------------------
-        // D - DELETE (Soft Delete/Cancelamento)
-        // ----------------------------------------------------
+        
         public async Task DeleteAsync(int id)
         {
             var solicitacao = await _dbContext.Solicitacoes.SingleOrDefaultAsync(s => s.Id == id);
@@ -167,7 +159,7 @@ namespace AbsenceFlow.API.Services
                 throw new RecursoNaoEncontradoException($"Solicitação com Id {id} não encontrada.");
             }
 
-            // Regra: Não pode deletar/cancelar se estiver APROVADA (deve passar por rejeição/estorno)
+            
             if (solicitacao.Status == SolicitacaoStatusEnum.Aprovada)
             {
                 throw new RegraNegocioInvalidaException("Solicitações APROVADAS devem ser canceladas através da transição para o status REJEITADA para garantir o estorno do saldo.");
@@ -177,9 +169,7 @@ namespace AbsenceFlow.API.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        // ----------------------------------------------------
-        // FUNÇÃO AUXILIAR: Cálculo de Dias Úteis
-        // ----------------------------------------------------
+     
         private int CalcularDiasUteis(DateTime inicio, DateTime fim)
         {
             if (inicio.Date > fim.Date) return 0;
@@ -187,7 +177,7 @@ namespace AbsenceFlow.API.Services
             int dias = 0;
             for (var dt = inicio.Date; dt <= fim.Date; dt = dt.AddDays(1))
             {
-                // Contabiliza apenas dias de segunda a sexta
+                
                 if (dt.DayOfWeek != DayOfWeek.Saturday && dt.DayOfWeek != DayOfWeek.Sunday)
                 {
                     dias++;

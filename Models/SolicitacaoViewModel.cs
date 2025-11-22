@@ -10,7 +10,7 @@ namespace AbsenceFlow.API.Models
         public SolicitacaoTipoEnum Tipo { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
-        public int DiasUteisSolicitados { get; set; } // O resultado da sua lógica inteligente
+        public int DiasUteisSolicitados { get; set; } 
         public string Motivo { get; set; }
         public SolicitacaoStatusEnum Status { get; set; }
         public DateTime CreatedAt { get; set; }
